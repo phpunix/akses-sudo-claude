@@ -13,6 +13,7 @@ if [ "${1:-}" != "-y" ]; then
   cat <<EOF
 Yang akan dihapus untuk user $TARGET_USER:
   - $SUDOERS_FILE (cache sudo kembali per terminal)
+  - cache password sudo milikmu (sudo -K), supaya tidak ada sisa jendela global
   - alias sudo-on / sudo-off di $BASHRC
   - aturan ask/deny sudo di $SETTINGS_FILE
   - bagian "## sudo" di $CLAUDE_MD
@@ -29,6 +30,10 @@ if sudo test -e "$SUDOERS_FILE"; then
 else
   ok "tidak terpasang"
 fi
+# Hapus semua catatan cache sudo user ini. Tanpa ini, catatan global dari sudo -v di atas
+# tersisa dan langsung berlaku lagi kalau install.sh dijalankan dalam 15 menit
+sudo -K
+ok "cache sudo dibersihkan"
 
 step "2/4 Alias ($BASHRC)"
 if [ -f "$BASHRC" ] && strip_bashrc < "$BASHRC" | replace_if_changed "$BASHRC"; then

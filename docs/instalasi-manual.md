@@ -35,7 +35,7 @@ rm -f "$f"
 > [!WARNING]
 > Jangan tutup terminal kalau `sudo visudo -c` menampilkan error. Hapus file itu dari terminal yang sama: `sudo rm /etc/sudoers.d/$(id -un)-sudo-window`.
 
-Setelah file terpasang, perintah sudo berikutnya akan **meminta password lagi**. Itu normal: cache lama tercatat per terminal, sedangkan sekarang sudo memakai cache global yang masih kosong.
+Setelah file terpasang, perintah sudo berikutnya biasanya **meminta password lagi**. Itu normal: cache lama tercatat per terminal, sedangkan sekarang sudo memakai cache global. Password tidak diminta kalau masih ada cache global yang belum lewat 15 menit, misalnya dari instalasi sebelumnya.
 
 ```bash
 sudo -l | grep -i timestamp      # harus ada timestamp_type=global, timestamp_timeout=15

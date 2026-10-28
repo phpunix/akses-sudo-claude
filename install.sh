@@ -113,7 +113,7 @@ cat <<EOF
 
 ${C_OK}Selesai.${C_OFF} Langkah berikutnya:
   1. source ~/.bashrc   # muat alias sudo-on / sudo-off
-  2. sudo-on            # minta password lagi; normal, cache sudo baru pindah ke mode global
+  2. sudo-on            # bisa minta password lagi; normal, cache sudo baru pindah ke mode global
   3. ./check.sh         # semua cek harus lolos
   4. Restart Claude Code, lalu ikuti README bagian "Verifikasi"
 EOF

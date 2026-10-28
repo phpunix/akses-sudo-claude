@@ -113,7 +113,7 @@ Username diambil otomatis dari user yang menjalankan script, jadi tidak ada file
 
 ```bash
 source ~/.bashrc
-sudo-on          # minta password lagi; normal, cache sudo baru pindah ke mode global
+sudo-on          # bisa minta password lagi; normal, cache sudo baru pindah ke mode global
 ./check.sh       # harus "Semua cek lolos."
 ```
 
@@ -185,7 +185,7 @@ cd ~/akses-sudo-claude
 ./uninstall.sh      # tambahkan -y untuk melewati konfirmasi
 ```
 
-Yang dihapus: file sudoers, alias di `~/.bashrc`, aturan sudo di `settings.json`, dan bagian `## sudo` di `CLAUDE.md`. Isi lain di file-file itu tetap, dan setiap file yang diubah di-backup ke `<file>.bak-<waktu>`. Restart Claude Code setelahnya.
+Yang dihapus: file sudoers, alias di `~/.bashrc`, aturan sudo di `settings.json`, bagian `## sudo` di `CLAUDE.md`, dan cache password sudo (`sudo -K`). Isi lain di file-file itu tetap, dan setiap file yang diubah di-backup ke `<file>.bak-<waktu>`. Restart Claude Code setelahnya.
 
 ## Dokumen lain
 
