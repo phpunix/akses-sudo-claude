@@ -40,6 +40,22 @@ sudo_flavor() {
 # version_ge A B: sukses kalau versi A >= B (akhiran seperti "p5" aman untuk sort -V)
 version_ge() { [ "$(printf '%s\n' "$2" "$1" | sort -V | head -1)" = "$2" ]; }
 
+# Path claude dari PATH, atau dari ~/.local/bin (di Debian baru masuk PATH setelah login ulang)
+claude_bin() {
+  command -v claude 2>/dev/null && return
+  [ -x "$HOME/.local/bin/claude" ] && echo "$HOME/.local/bin/claude"
+}
+
+# claude_login_state BIN: cetak "yes", "no", atau "unknown" (versi lama tanpa `claude auth status`)
+claude_login_state() {
+  local out
+  out="$(timeout 30 "$1" auth status --json 2>/dev/null || true)"
+  if grep -Eq '"loggedIn": *true' <<<"$out"; then echo yes
+  elif grep -Eq '"loggedIn": *false' <<<"$out"; then echo no
+  else echo unknown
+  fi
+}
+
 render_sudoers() { sed "s/__USER__/$TARGET_USER/g" "$FILES_DIR/sudoers-claude-window.template"; }
 
 # Transformasi stdin -> stdout. Urutan entri yang sudah ada dipertahankan, tanpa duplikat.

@@ -74,7 +74,10 @@ which curl || sudo apt install -y curl
 curl -fsSL https://claude.ai/install.sh | bash
 export PATH="$HOME/.local/bin:$PATH"   # sesi ini saja; login berikutnya otomatis
 claude                                 # login lewat URL yang ditampilkan, lalu /exit
+claude auth status --text              # pastikan sudah login
 ```
+
+Langkah ini wajib. `install.sh` berhenti kalau Claude Code belum terpasang atau belum login.
 
 ### 2. Bawa repo ini ke VPS
 
@@ -96,12 +99,13 @@ cd ~/akses-sudo-claude
 ```
 
 Installer akan:
-1. Cek jenis sudo (berhenti kalau sudo-rs)
-2. Minta password sudo sekali, cek tidak ada `NOPASSWD`, dan cek `/etc/sudoers.d/` dibaca
-3. Pasang `jq` kalau belum ada
-4. Validasi lalu pasang file sudoers. Kalau `visudo -c` gagal, file langsung dihapus lagi
-5. Tambahkan alias `sudo-on` / `sudo-off` ke `~/.bashrc`
-6. Gabungkan aturan izin ke `~/.claude/settings.json` (dengan backup) dan pasang `CLAUDE.md`
+1. Cek Claude Code sudah terpasang dan sudah login (berhenti kalau belum, sebelum mengubah apa pun)
+2. Cek jenis sudo (berhenti kalau sudo-rs)
+3. Minta password sudo sekali, cek tidak ada `NOPASSWD`, dan cek `/etc/sudoers.d/` dibaca
+4. Pasang `jq` kalau belum ada
+5. Validasi lalu pasang file sudoers. Kalau `visudo -c` gagal, file langsung dihapus lagi
+6. Tambahkan alias `sudo-on` / `sudo-off` ke `~/.bashrc`
+7. Gabungkan aturan izin ke `~/.claude/settings.json` (dengan backup) dan pasang `CLAUDE.md`
 
 Username diambil otomatis dari user yang menjalankan script, jadi tidak ada file yang perlu diedit.
 

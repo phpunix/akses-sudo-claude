@@ -9,15 +9,25 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$REPO_DIR/lib/common.sh"
 
 [ "$(id -u)" -ne 0 ] || die "Jangan jalankan sebagai root. Jalankan sebagai user yang memakai Claude Code."
+step "1/7 Claude Code terpasang dan sudah login"
+claude="$(claude_bin)" || die "Claude Code belum terpasang. Pasang dulu: curl -fsSL https://claude.ai/install.sh | bash, lalu login dengan menjalankan: claude"
+case "$(claude_login_state "$claude")" in
+  yes) claude_version="$("$claude" --version 2>/dev/null | head -1)"
+       ok "Claude Code ${claude_version%% *}, sudah login" ;;
+  no)  die "Claude Code belum login. Jalankan: claude, login lewat URL yang ditampilkan, ketik /exit, lalu ulangi ./install.sh" ;;
+  *)   die "Status login Claude Code tidak bisa dipastikan (versi terlalu lama?). Perbarui Claude Code, pastikan sudah login, lalu ulangi." ;;
+esac
+command -v claude >/dev/null || info "claude ada di ~/.local/bin tapi belum di PATH sesi ini; login ulang SSH atau: export PATH=\"\$HOME/.local/bin:\$PATH\""
+
 command -v sudo >/dev/null || die "sudo belum terpasang. Lihat docs/distro.md bagian Debian."
 
-step "1/6 Jenis sudo"
+step "2/7 Jenis sudo"
 read -r flavor version <<<"$(sudo_flavor)"
 [ "$flavor" = gnu ] || die "Butuh GNU sudo, terdeteksi: $flavor $version. Ubuntu 25.10+ memakai sudo-rs, lihat docs/distro.md."
 version_ge "$version" "$MIN_SUDO_VERSION" || die "GNU sudo $version terlalu lama, butuh >= $MIN_SUDO_VERSION."
 ok "GNU sudo $version"
 
-step "2/6 Hak sudo (password diminta sekali)"
+step "3/7 Hak sudo (password diminta sekali)"
 sudo -v || die "User $TARGET_USER tidak bisa memakai sudo. Tambahkan ke grup sudo, lihat docs/distro.md."
 rules="$(sudo -l)"
 if grep -Eq 'NOPASSWD|!authenticate' <<<"$rules"; then
@@ -28,20 +38,15 @@ sudo grep -Eq '^[@#]includedir[[:space:]]+/etc/sudoers\.d/?[[:space:]]*$' /etc/s
   || die "/etc/sudoers tidak membaca /etc/sudoers.d/ (baris @includedir tidak ada)."
 ok "/etc/sudoers membaca /etc/sudoers.d/"
 
-step "3/6 Paket pendukung"
+step "4/7 Paket pendukung"
 if ! command -v jq >/dev/null; then
   command -v apt-get >/dev/null || die "jq belum terpasang. Pasang dulu lewat package manager distro."
   sudo apt-get update -qq
   sudo apt-get install -y -qq jq
 fi
 ok "$(jq --version)"
-if command -v claude >/dev/null || [ -x "$HOME/.local/bin/claude" ]; then
-  ok "Claude Code terpasang"
-else
-  warn "Claude Code belum terpasang. Konfigurasi tetap dipasang; pasang nanti: curl -fsSL https://claude.ai/install.sh | bash"
-fi
 
-step "4/6 Jendela sudo global ($SUDOERS_FILE)"
+step "5/7 Jendela sudo global ($SUDOERS_FILE)"
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
 render_sudoers > "$tmp"
@@ -56,7 +61,7 @@ else
   ok "terpasang: timestamp_type=global, timestamp_timeout=15"
 fi
 
-step "5/6 Alias sudo-on / sudo-off ($BASHRC)"
+step "6/7 Alias sudo-on / sudo-off ($BASHRC)"
 if [ -f "$BASHRC" ] && grep -q '^alias sudo-on=' "$BASHRC"; then
   ok "sudah ada"
 else
@@ -72,7 +77,7 @@ if grep -q '^export SUDO_ASKPASS=' "$BASHRC"; then
   warn "$BASHRC masih meng-export SUDO_ASKPASS dari setup lama. Sebaiknya hapus baris itu."
 fi
 
-step "6/6 Konfigurasi Claude Code ($CLAUDE_DIR)"
+step "7/7 Konfigurasi Claude Code ($CLAUDE_DIR)"
 mkdir -p "$CLAUDE_DIR"
 if [ -s "$SETTINGS_FILE" ]; then
   jq empty "$SETTINGS_FILE" 2>/dev/null || die "$SETTINGS_FILE bukan JSON valid. Perbaiki dulu (cek: jq . $SETTINGS_FILE)."

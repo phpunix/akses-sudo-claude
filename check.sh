@@ -48,7 +48,15 @@ else
 fi
 
 step "Claude Code ($CLAUDE_DIR)"
-if command -v claude >/dev/null || [ -x "$HOME/.local/bin/claude" ]; then ok "Claude Code terpasang"; else warn "Claude Code belum terpasang"; fi
+if claude="$(claude_bin)"; then
+  case "$(claude_login_state "$claude")" in
+    yes) ok "Claude Code terpasang dan sudah login" ;;
+    no)  bad "Claude Code belum login (jalankan: claude)" ;;
+    *)   warn "Claude Code terpasang, status login tidak bisa dipastikan (versi terlalu lama?)" ;;
+  esac
+else
+  bad "Claude Code belum terpasang"
+fi
 
 if ! command -v jq >/dev/null; then
   bad "jq belum terpasang, settings.json tidak bisa dicek"

@@ -9,6 +9,7 @@ cd ~/akses-sudo-claude
 ## 1. Cek prasyarat
 
 ```bash
+claude auth status --text        # Claude Code harus terpasang dan sudah login
 sudo -V | head -1                # harus "Sudo version 1.x" (≥ 1.8.21), bukan sudo-rs
 sudo -l                          # tidak boleh ada NOPASSWD di bagian "may run"
 sudo grep includedir /etc/sudoers   # harus ada "@includedir /etc/sudoers.d"

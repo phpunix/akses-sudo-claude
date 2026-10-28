@@ -57,6 +57,15 @@ Normal. Cache password sebelumnya tercatat per terminal, sedangkan setelah file 
 </details>
 
 <details>
+<summary><b><code>install.sh</code> berhenti karena Claude Code belum terpasang atau belum login</b></summary>
+
+- **Belum terpasang:** `curl -fsSL https://claude.ai/install.sh | bash`, lalu `export PATH="$HOME/.local/bin:$PATH"`.
+- **Belum login:** jalankan `claude`, buka URL yang ditampilkan di browser PC, login, tempel kodenya kembali ke terminal, lalu `/exit`. Cek dengan `claude auth status --text`.
+- **"Status login tidak bisa dipastikan":** versi Claude Code terlalu lama dan belum punya `claude auth status`. Pasang ulang dengan installer di atas, lalu login.
+
+</details>
+
+<details>
 <summary><b><code>install.sh</code> berhenti dengan "punya aturan NOPASSWD"</b></summary>
 
 User kamu bisa sudo tanpa password, jadi jendela sudo tidak ada artinya. Lihat [distro.md](distro.md#image-cloud-dengan-nopasswd).
