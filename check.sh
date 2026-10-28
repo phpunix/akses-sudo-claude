@@ -48,12 +48,8 @@ else
 fi
 
 step "Claude Code ($CLAUDE_DIR)"
-if claude="$(claude_bin)"; then
-  case "$(claude_login_state "$claude")" in
-    yes) ok "Claude Code terpasang dan sudah login" ;;
-    no)  bad "Claude Code belum login (jalankan: claude)" ;;
-    *)   warn "Claude Code terpasang, status login tidak bisa dipastikan (versi terlalu lama?)" ;;
-  esac
+if claude_bin >/dev/null; then
+  ok "Claude Code terpasang (status login cek manual: claude auth status --text)"
 else
   bad "Claude Code belum terpasang"
 fi

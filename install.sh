@@ -2,6 +2,7 @@
 # Pasang akses sudo untuk Claude Code: jendela sudo global 15 menit + persetujuan per perintah.
 # Jalankan sebagai user biasa dari terminal sendiri (bukan lewat Claude), karena butuh password sudo.
 # Aman dijalankan ulang: bagian yang sudah terpasang dilewati.
+# Pemakaian: ./install.sh [-y]   (-y melewati konfirmasi Claude Code sudah terpasang dan login)
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,14 +11,17 @@ source "$REPO_DIR/lib/common.sh"
 
 [ "$(id -u)" -ne 0 ] || die "Jangan jalankan sebagai root. Jalankan sebagai user yang memakai Claude Code."
 step "1/7 Claude Code terpasang dan sudah login"
-claude="$(claude_bin)" || die "Claude Code belum terpasang. Pasang dulu: curl -fsSL https://claude.ai/install.sh | bash, lalu login dengan menjalankan: claude"
-case "$(claude_login_state "$claude")" in
-  yes) claude_version="$("$claude" --version 2>/dev/null | head -1)"
-       ok "Claude Code ${claude_version%% *}, sudah login" ;;
-  no)  die "Claude Code belum login. Jalankan: claude, login lewat URL yang ditampilkan, ketik /exit, lalu ulangi ./install.sh" ;;
-  *)   die "Status login Claude Code tidak bisa dipastikan (versi terlalu lama?). Perbarui Claude Code, pastikan sudah login, lalu ulangi." ;;
-esac
-command -v claude >/dev/null || info "claude ada di ~/.local/bin tapi belum di PATH sesi ini; login ulang SSH atau: export PATH=\"\$HOME/.local/bin:\$PATH\""
+if [ "${1:-}" = "-y" ]; then
+  ok "dikonfirmasi lewat -y"
+else
+  warn "Pastikan Claude Code sudah terpasang dan sudah login sebelum lanjut."
+  info "pasang : curl -fsSL https://claude.ai/install.sh | bash"
+  info "login  : claude   (buka URL yang ditampilkan, lalu /exit)"
+  info "cek    : claude auth status --text"
+  read -rp "Ketik yes kalau Claude Code sudah terpasang dan sudah login: " answer || answer=""
+  [ "${answer,,}" = yes ] || die "Dibatalkan, tidak ada yang diubah. Pasang dan login Claude Code dulu, lalu ulangi ./install.sh"
+  ok "dikonfirmasi"
+fi
 
 command -v sudo >/dev/null || die "sudo belum terpasang. Lihat docs/distro.md bagian Debian."
 

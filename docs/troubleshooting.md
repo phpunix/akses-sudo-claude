@@ -57,11 +57,12 @@ Normal. Cache password sebelumnya tercatat per terminal, sedangkan setelah file 
 </details>
 
 <details>
-<summary><b><code>install.sh</code> berhenti karena Claude Code belum terpasang atau belum login</b></summary>
+<summary><b>Belum yakin Claude Code sudah terpasang dan login sebelum menjawab <code>yes</code></b></summary>
 
-- **Belum terpasang:** `curl -fsSL https://claude.ai/install.sh | bash`, lalu `export PATH="$HOME/.local/bin:$PATH"`.
-- **Belum login:** jalankan `claude`, buka URL yang ditampilkan di browser PC, login, tempel kodenya kembali ke terminal, lalu `/exit`. Cek dengan `claude auth status --text`.
-- **"Status login tidak bisa dipastikan":** versi Claude Code terlalu lama dan belum punya `claude auth status`. Pasang ulang dengan installer di atas, lalu login.
+- **Cek:** `claude auth status --text`. Kalau `claude: command not found`, jalankan `export PATH="$HOME/.local/bin:$PATH"` lalu cek lagi.
+- **Belum terpasang:** `curl -fsSL https://claude.ai/install.sh | bash`.
+- **Belum login:** jalankan `claude`, buka URL yang ditampilkan di browser PC, login, tempel kodenya kembali ke terminal, lalu `/exit`.
+- Kalau terlanjur menjawab selain `yes`, tidak ada yang berubah. Cukup jalankan `./install.sh` lagi.
 
 </details>
 

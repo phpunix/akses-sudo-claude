@@ -46,16 +46,6 @@ claude_bin() {
   [ -x "$HOME/.local/bin/claude" ] && echo "$HOME/.local/bin/claude"
 }
 
-# claude_login_state BIN: cetak "yes", "no", atau "unknown" (versi lama tanpa `claude auth status`)
-claude_login_state() {
-  local out
-  out="$(timeout 30 "$1" auth status --json 2>/dev/null || true)"
-  if grep -Eq '"loggedIn": *true' <<<"$out"; then echo yes
-  elif grep -Eq '"loggedIn": *false' <<<"$out"; then echo no
-  else echo unknown
-  fi
-}
-
 render_sudoers() { sed "s/__USER__/$TARGET_USER/g" "$FILES_DIR/sudoers-claude-window.template"; }
 
 # Transformasi stdin -> stdout. Urutan entri yang sudah ada dipertahankan, tanpa duplikat.

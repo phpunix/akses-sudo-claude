@@ -77,7 +77,7 @@ claude                                 # login lewat URL yang ditampilkan, lalu 
 claude auth status --text              # pastikan sudah login
 ```
 
-Langkah ini wajib. `install.sh` berhenti kalau Claude Code belum terpasang atau belum login.
+Langkah ini wajib. `install.sh` akan memintamu mengetik `yes` sebagai konfirmasi bahwa Claude Code sudah terpasang dan sudah login.
 
 ### 2. Bawa repo ini ke VPS
 
@@ -99,7 +99,7 @@ cd ~/akses-sudo-claude
 ```
 
 Installer akan:
-1. Cek Claude Code sudah terpasang dan sudah login (berhenti kalau belum, sebelum mengubah apa pun)
+1. Minta konfirmasi `yes` bahwa Claude Code sudah terpasang dan sudah login (`./install.sh -y` untuk melewatinya). Jawaban lain membatalkan instalasi sebelum ada yang diubah
 2. Cek jenis sudo (berhenti kalau sudo-rs)
 3. Minta password sudo sekali, cek tidak ada `NOPASSWD`, dan cek `/etc/sudoers.d/` dibaca
 4. Pasang `jq` kalau belum ada
