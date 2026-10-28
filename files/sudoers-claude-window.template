@@ -1,0 +1,3 @@
+# Jendela sudo 15 menit, berlaku lintas terminal (untuk Claude Code). Buka: sudo-on, tutup: sudo-off
+# Dipasang oleh akses-sudo-claude ke /etc/sudoers.d/<user>-sudo-window (mode 0440 root:root).
+Defaults:__USER__ timestamp_type=global, timestamp_timeout=15

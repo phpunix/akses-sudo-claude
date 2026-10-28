@@ -1,0 +1,2 @@
+# Script dan file sudoers wajib LF; CRLF (misalnya setelah diedit di Windows) membuatnya rusak
+* text=auto eol=lf

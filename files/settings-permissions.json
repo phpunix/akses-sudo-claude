@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(sudo:*)"
+    ],
+    "deny": [
+      "Bash(sudo rm -rf:*)",
+      "Bash(sudo rm -fr:*)",
+      "Bash(sudo rm -r -f:*)",
+      "Bash(sudo -n rm -rf:*)",
+      "Bash(sudo -n rm -fr:*)",
+      "Bash(sudo -n rm -r -f:*)",
+      "Bash(sudo ufw disable:*)",
+      "Bash(sudo ufw reset:*)",
+      "Bash(sudo -n ufw disable:*)",
+      "Bash(sudo -n ufw reset:*)"
+    ]
+  }
+}
