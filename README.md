@@ -143,7 +143,7 @@ sudo-on                                  # → minta password, "sudo aktif 15 me
 sudo -n true && echo OK                  # → OK (bukti jendelanya global)
 ```
 
-**Di Claude Code** (jalankan `claude`, pastikan mode izin **default**, ganti dengan Shift+Tab):
+**Di Claude Code** (jalankan `claude`; mode default maupun auto sama-sama memunculkan prompt untuk sudo, asalkan bukan `bypassPermissions`):
 
 | Minta Claude | Yang diharapkan |
 |---|---|
@@ -169,7 +169,7 @@ sudo -n true && echo OK                  # → OK (bukti jendelanya global)
 > [!CAUTION]
 > Selama jendela terbuka, **proses apa pun milik user kamu** bisa memakai `sudo` tanpa password, bukan hanya Claude. Jaga jendelanya tetap singkat dan biasakan `sudo-off` setelah selesai.
 
-- **Prompt persetujuan hanya ada di mode izin default.** Di auto mode atau `bypassPermissions`, perintah sudo bisa jalan tanpa ditanya. `check.sh` memberi peringatan kalau `defaultMode` di `settings.json` melewati prompt.
+- **Aturan `ask` tetap berlaku di auto mode.** Sudah dites: dengan auto mode sebagai mode default Claude Code, setiap perintah `sudo` tetap memunculkan prompt persetujuan. Pengecualiannya `bypassPermissions` (`--dangerously-skip-permissions`), mode yang dirancang untuk melewati prompt persetujuan. Jangan pakai mode itu bersama setup ini. `check.sh` memberi peringatan kalau `defaultMode` di `settings.json` bernilai `bypassPermissions`.
 - **Aturan `ask`/`deny` hanya melihat perintah yang diketik Claude.** Script yang memanggil `sudo` di dalamnya (misalnya `./deploy.sh`) tidak memicu prompt sudo, jadi baca juga isi script yang mau dijalankan Claude.
 - **Perintah `!` di Claude Code dijalankan atas namamu** dan melewati `ask` maupun `deny`. Baca dulu perintah yang disarankan Claude sebelum kamu ketik dengan `!`.
 - **`deny` hanya pengaman tambahan.** Bentuk lain seperti `sudo -n rm --recursive --force` tetap lolos ke prompt `ask`. Pengaman utamanya adalah kamu membaca setiap prompt.

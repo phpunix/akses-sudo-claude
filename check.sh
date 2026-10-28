@@ -69,10 +69,7 @@ else
   [ -z "$allow_sudo" ] || warn "ada aturan allow yang melewati prompt sudo: $allow_sudo"
 
   mode="$(jq -r '.permissions.defaultMode // empty' "$SETTINGS_FILE")"
-  case "$mode" in
-    ""|default|plan|acceptEdits) ;;
-    *) warn "defaultMode=$mode: prompt persetujuan sudo bisa dilewati" ;;
-  esac
+  [ "$mode" != bypassPermissions ] || warn "defaultMode=bypassPermissions: prompt persetujuan sudo dilewati"
 fi
 
 if [ -f "$CLAUDE_MD" ] && grep -q '^## sudo[[:space:]]*$' "$CLAUDE_MD"; then

@@ -45,8 +45,10 @@ ok "/etc/sudoers membaca /etc/sudoers.d/"
 step "4/7 Paket pendukung"
 if ! command -v jq >/dev/null; then
   command -v apt-get >/dev/null || die "jq belum terpasang. Pasang dulu lewat package manager distro."
-  sudo apt-get update -qq
-  sudo apt-get install -y -qq jq
+  info "memasang jq..."
+  # Sembunyikan output apt/dpkg/needrestart; pesan error apt tetap tampil lewat stderr
+  sudo env DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get update -qq >/dev/null
+  sudo env DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get install -y -qq jq >/dev/null
 fi
 ok "$(jq --version)"
 

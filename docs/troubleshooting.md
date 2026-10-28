@@ -23,8 +23,8 @@ Normal. Cache password sebelumnya tercatat per terminal, sedangkan setelah file 
 <details>
 <summary><b>Claude tidak meminta persetujuan untuk <code>sudo</code></b></summary>
 
-- Cek mode izin Claude Code di bagian bawah layar. Di auto mode atau `bypassPermissions`, prompt dilewati. Ganti ke mode default dengan Shift+Tab.
-- `./check.sh` memberi peringatan kalau ada aturan `allow` untuk sudo atau `defaultMode` yang melewati prompt.
+- Mode default dan auto mode sama-sama memunculkan prompt untuk sudo (sudah dites). Kalau prompt tidak muncul, cek apakah Claude Code jalan dengan `bypassPermissions` atau `--dangerously-skip-permissions`.
+- `./check.sh` memberi peringatan kalau ada aturan `allow` untuk sudo atau `defaultMode` bernilai `bypassPermissions`.
 - Cek juga aturan `allow` di `.claude/settings.json` dan `.claude/settings.local.json` milik proyek yang sedang dibuka.
 - Kalau Claude menjalankan script yang memanggil sudo di dalamnya, prompt yang muncul adalah untuk script itu, bukan untuk sudo.
 - Restart Claude Code setelah mengubah `settings.json`.
